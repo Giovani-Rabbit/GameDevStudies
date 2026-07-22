@@ -1,10 +1,7 @@
-package deltatime
+package prototypes
 
 import "core:fmt"
 import rl "vendor:raylib"
-
-WINDOW_H :: 800
-WINDOW_W :: 1200
 
 execDeltaTime :: proc() {
 	rl.InitWindow(WINDOW_W, WINDOW_H, "Test window")
