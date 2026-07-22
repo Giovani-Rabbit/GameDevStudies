@@ -20,8 +20,10 @@ main :: proc() {
 		paint_element(&grid)
 
 		rl.BeginDrawing()
+
 		rl.ClearBackground(rl.BLACK)
 		draw_solid_grid(&grid)
+
 		rl.EndDrawing()
 	}
 
@@ -63,8 +65,10 @@ paint_element :: proc(grid: ^[ROWS][COLS]rl.Color) {
 	if rl.IsMouseButtonPressed(.LEFT) {
 		mouse := rl.GetMousePosition()
 		fmt.println("current mouse: ", mouse, "Cell: ", int(mouse.x) / CELL_SIZE)
+
 		cx := int(mouse.x) / CELL_SIZE
 		cy := int(mouse.y) / CELL_SIZE
+
 		if cx >= 0 && cx < COLS && cy >= 0 && cy < ROWS {
 			grid^[cy][cx] = rl.RED
 		}
