@@ -19,13 +19,13 @@ run_lerp :: proc() {
 
 	debug_mode := false
 	for !rl.WindowShouldClose() {
-		rl.BeginDrawing()
-		rl.ClearBackground(rl.WHITE)
-
 		if rl.IsKeyPressed(.D) do debug_mode = !debug_mode
 
 		update_tc(&tc, debug_mode)
 		update_tv(&tv, debug_mode, distance)
+
+		rl.BeginDrawing()
+		rl.ClearBackground(rl.WHITE)
 
 		draw_lerp(&p1, &p2, tc)
 		draw_lerp(&p3, &p4, tv)
