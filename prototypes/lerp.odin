@@ -1,22 +1,35 @@
 package prototypes
+import "core:fmt"
 import rl "vendor:raylib"
 
 run_lerp :: proc() {
 	rl.InitWindow(WINDOW_W, WINDOW_H, "GRID")
-	rl.SetTargetFPS(60)
+	rl.SetTargetFPS(144)
 
-	p1 := rl.Vector2{100, 200}
-	p2 := rl.Vector2{300, 400}
-	t: f32 = 0.0
+	p1 := rl.Vector2{0, WINDOW_H / 3}
+	p2 := rl.Vector2{WINDOW_W, WINDOW_H / 3}
+	p3 := rl.Vector2{0, WINDOW_H / 2}
+	p4 := rl.Vector2{WINDOW_W, WINDOW_H / 2}
+
+	tc: f32 = 0.0 // tempo constante, velocidade variavel
+	tv: f32 = 0.0 // tempo variavel, velocidade constante
 
 	for !rl.WindowShouldClose() {
 		rl.BeginDrawing()
 		rl.ClearBackground(rl.WHITE)
 
-		t += rl.GetFrameTime() * 0.5
-		if t > 1.0 do t = 0.0
+		tc += rl.GetFrameTime() * 0.5
+		if tc > 1.0 do tc = 0.0
 
-		draw_lerp(&p1, &p2, t)
+		distance := rl.Vector2Distance(p1, p2)
+		speed: f32 = 200.0
+		total_time := distance / speed
+		tv += rl.GetFrameTime() / total_time
+		if tv > 1.0 do tv = 0.0
+		fmt.println("tv: ", tv, distance, total_time)
+
+		draw_lerp(&p1, &p2, tc)
+		draw_lerp(&p3, &p4, tv)
 
 		rl.EndDrawing()
 	}
