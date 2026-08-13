@@ -1,5 +1,4 @@
 package prototypes
-
 import "core:fmt"
 import rl "vendor:raylib"
 
