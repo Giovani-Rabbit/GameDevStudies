@@ -78,11 +78,11 @@ draw_basics :: proc(s: ^Basics_State) {
 
 // tempo constante / velocidade variavel
 update_tc :: proc(tc: ^f32, debug_mode: bool) {
+	time_delta := rl.GetFrameTime() * 0.5
+
 	if debug_mode {
-		if rl.IsMouseButtonPressed(.LEFT) {
-			tc^ += rl.GetFrameTime() * 0.5
-		}
-	} else do tc^ += rl.GetFrameTime() * 0.5
+		if rl.IsMouseButtonPressed(.LEFT) do tc^ += time_delta
+	} else do tc^ += time_delta
 
 	if tc^ > 1.0 do tc^ = 0.0
 }
@@ -91,12 +91,11 @@ update_tc :: proc(tc: ^f32, debug_mode: bool) {
 update_tv :: proc(tv: ^f32, debug_mode: bool, distance: f32) {
 	speed: f32 = 200.0
 	total_time := distance / speed
+	time_delta := rl.GetFrameTime() / total_time
 
 	if debug_mode {
-		if rl.IsMouseButtonPressed(.RIGHT) {
-			tv^ += rl.GetFrameTime() / total_time
-		}
-	} else do tv^ += rl.GetFrameTime() / total_time
+		if rl.IsMouseButtonPressed(.RIGHT) do tv^ += time_delta
+	} else do tv^ += time_delta
 
 	if tv^ > 1.0 do tv^ = 0.0
 }
@@ -113,6 +112,9 @@ init_follow_mouse_state :: proc() -> Follow_Mouse_state {
 update_follow_mouse :: proc(s: ^Follow_Mouse_state) {
 	target := rl.GetMousePosition()
 	smoothing_delta := rl.GetFrameTime() * s.smoothing
+
+	if rl.Vector2Distance(s.position, target) < 0.5 do s.position = target
+
 	s.position = lerp_vec2(s.position, target, smoothing_delta)
 }
 
@@ -127,7 +129,6 @@ draw_lerp_point :: proc(p1, p2: ^rl.Vector2, t: f32) {
 	draw_line_simple(p1^, p2^)
 	rl.DrawCircle(i32(p2.x), i32(p2.y), 10, rl.RED)
 	rl.DrawCircle(i32(p1.x), i32(p1.y), 10, rl.RED)
-
 	pl := lerp_vec2(p1^, p2^, t)
 	rl.DrawCircleV(pl, 10, rl.BLUE)
 }
@@ -140,7 +141,6 @@ lerp_vec2 :: proc(a, b: rl.Vector2, t: f32) -> rl.Vector2 {
 	result: rl.Vector2 = {}
 	result.x = lerp(a.x, b.x, t)
 	result.y = lerp(a.y, b.y, t)
-	fmt.println("lerp x: ", a.x, b.x, t)
 	return result
 }
 
