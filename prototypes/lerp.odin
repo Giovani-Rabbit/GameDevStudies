@@ -1,5 +1,4 @@
 package prototypes
-import "core:fmt"
 import rl "vendor:raylib"
 
 Lerp_Mode :: enum {
@@ -14,7 +13,7 @@ toggle_mode :: proc(mode: ^Lerp_Mode) {
 }
 
 run_lerp :: proc() {
-	rl.InitWindow(WINDOW_W, WINDOW_H, "GRID")
+	rl.InitWindow(WINDOW_W, WINDOW_H, "Lerp")
 	rl.SetTargetFPS(144)
 
 	mode := Lerp_Mode.BASICS

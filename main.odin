@@ -2,5 +2,5 @@ package main
 import p "prototypes"
 
 main :: proc() {
-	p.run_lerp()
+	p.follow_leader()
 }
